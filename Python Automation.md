@@ -20,10 +20,13 @@ AWS services expose standardized, HTTPS-based JSON APIs, and Boto3 communicates 
 
 Boto3 exposes AWS services through four main interfaces:
 
-1- Client: Low-level 1:1 mapping to AWS APIs and Detailed control, raw dictionary responses
-2- Resource: High-level, object-oriented abstraction and Clean, Pythonic operations
-3- Paginator: Handles multi-page AWS API responses and Large listing operations
-4- Waiter: Waits for state transitions of AWS resources and Asynchronous operations
+**1- Client:** It provide a low-level and 1:1 mapping to AWS APIs and Detailed control, raw dictionary responses
+
+**2- Resource:** Provide high-level, object-oriented abstraction and Clean, Pythonic operations
+
+**3- Paginator:** It handles multi-page AWS API responses and Large listing operations
+
+**4- Waiter:** Waits for state transitions of AWS resources and Asynchronous operations
 
 Each serves a different purpose in automation and application development.
 
@@ -90,8 +93,11 @@ instance = ec2.create_instances(
 
 #### Paginators (Handling Multi-Page API Responses)
 
-AWS APIs often return large datasets in pages, Paginators allow seamless iteration over all results.
-Used in Listing S3 objects, Listing DynamoDB table items, and Describing EC2 instances at scale
+A paginator is a tool that automatically handles multiple pages of responses from AWS API calls.
+
+Many AWS API responses (like listing S3 objects) return limited results per call (e.g., 1000 objects max per page). If you have more, you get them in pages — and must retrieve the next page using a ContinuationToken.
+
+Paginators automate this for you.
 
 Example: 
 
