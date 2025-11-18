@@ -141,9 +141,10 @@ Now, AWS says:
 Imagine AWS is giving you oranges (your EC2 instances), but they always pack them in boxes (reservations). So: 
 • You have: 
       
-Box 1 →  EC2 #1,  EC2 #2
-Box 2 →  EC2 #3  
-Box 3 → (empty) 
+- Box 1 →  EC2 #1, EC2 #2
+- Box 2 →  EC2 #3  
+- Box 3 → (empty)
+
 If you want to reach all oranges, you have to: 
 1. Open each box (loop through reservations) 
 2. Take out the oranges (loop through instances inside each reservation).
