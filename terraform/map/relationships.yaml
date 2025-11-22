@@ -1,0 +1,16 @@
+terraform-basics:
+  title: "Terraform Basics – Part 1"
+  series: "Terraform + AWS"
+  tags: ["terraform", "basics", "iac"]
+  cover: ""
+
+  project_file: "Tech-stack/terraform/docs/terraform.md"
+
+  project_sections:
+    include: [
+      "intro",
+      "concepts",
+      "examples",
+      "best-practices",
+      "conclusion"
+    ]
