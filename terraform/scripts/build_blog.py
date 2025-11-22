@@ -2,7 +2,7 @@ import os
 import re
 import yaml
 
-REL_MAP = "maps/relationships.yaml"
+REL_MAP = "map/relationships.yaml"
 OUTPUT_DIR = "final_posts/"
 
 def extract_sections(file_path, include_sections):
