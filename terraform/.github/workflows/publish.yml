@@ -1,0 +1,27 @@
+name: Build & Publish Blog
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: pip install pyyaml
+
+      - run: python scripts/build_blog.py
+
+      - run: |
+          git config user.email "actions@github.com"
+          git config user.name "AutoPublisher"
+          git add final_posts/
+          git commit -m "update blog" || echo "No changes"
+          git push
