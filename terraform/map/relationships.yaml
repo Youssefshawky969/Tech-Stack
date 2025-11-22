@@ -8,9 +8,11 @@ terraform-basics:
 
   project_sections:
     include: [
-      "intro",
-      "concepts",
-      "examples",
-      "best-practices",
-      "conclusion"
+      "overview",
+      "providers",
+      "resoures",
+      "variables",
+      "state"
+      "modules"
+      "end"
     ]
