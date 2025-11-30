@@ -1,27 +1,43 @@
-name: Build & Publish Blog
+name: Publish Blog to Hashnode
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout Repo
+      uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
 
-      - run: pip install pyyaml
+    - name: Install deps
+      run: pip install pyyaml
 
-      - run: python scripts/build_blog.py
+    - name: Build blog post
+      run: python scripts/build_blog.py
 
-      - run: |
-          git config user.email "actions@github.com"
-          git config user.name "AutoPublisher"
-          git add final_posts/
-          git commit -m "update blog" || echo "No changes"
-          git push
+    - name: Publish to Hashnode
+      run: |
+        POST_FILE=$(ls final_posts/*.md)
+        CONTENT=$(cat $POST_FILE)
+
+        curl -X POST "https://gql.hashnode.com/" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: ${{ secrets.HASHNODE_API_TOKEN }}" \
+          -d '{
+            "query": "mutation CreateStory($input: CreateStoryInput!){ createStory(input: $input){ post { _id title } }}",
+            "variables": {
+              "input": {
+                "title": "'"$(grep -m1 'title:' $POST_FILE | cut -d '"' -f2)"'",
+                "contentMarkdown": "'"$(echo "$CONTENT" | sed 's/"/\\"/g')"'" 
+              }
+            }
+          }'
