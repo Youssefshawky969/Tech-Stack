@@ -1,7 +1,7 @@
 terraform-basics:
   title: "Terraform Basics – Part 1"
   series: "Terraform + AWS"
-  tags: ["terraform", "basics", "iac"]
+  tags: ["terraform", "basics", "infrastructure-as-code"]
   cover: ""
 
   project_file: "Tech-stack/terraform/docs/terraform.md"
