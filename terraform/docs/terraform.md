@@ -1,10 +1,10 @@
-[section:overview]
+## [section:overview]
 ### Overview
 Terraform is an Infrastructur as Code "IAC" tool by HashiCorp that lets you define, provision, and manage cloud infrastructure using configuration files.
 
 you just describe what you want (Servers, storage, databases, etc..) and terraform handels the creation.
 
-[section:providers]
+## [section:providers]
 ### providers
 Providers tell terrafrom which cloud or platfrom to work with. For Example, AWS, Azure, GCP, and etc...
 
@@ -19,7 +19,7 @@ provider "aws" {
 ```
 Here, terraform will manage infrastructre on AWS in the US-east-1 region.
 
-[section:resoures]
+## [section:resources]
 ### Resources
 A resource is any piece of infrastructure you want to create provider's instances, Storage, VPCs, etc...
 
@@ -33,7 +33,7 @@ resource "aws_instance" "my_server" {
 ```
 This create an EC2 instance using the provider AMI and type
 
-[section:variables]
+## [section:variables]
 ### Variable
 Variables make your Terrafrom code reusable and flexible. Instead of hardcoding values, you just define them in variables and refrence them elsewhere
 
@@ -51,7 +51,7 @@ resource "aws_instance" "my_server" {
 }
 ```
 
-[section:state]
+## [section:state]
 ### State
 
 Terraform kepps track of what it has created using a state file (terraform.tfstate).
@@ -64,7 +64,7 @@ Example:
 ###### Best Practice:
 Store the state file remotley (e.g,, S3 backend or HCL cloud) when working in teams.
 
-[section:modules]
+## [section:modules]
 ### Modules
 Modules are reusable groups of terraform files.
 They make it easy to organize and reuse infrastucture code (like functions in programming)
@@ -89,7 +89,7 @@ module "web_server" {
 ```
 So now, your main Teeraform project can reuse this EC2 module anywhere.
 
-[section:end)
+## [section:end)
 ### Simple full example
 so at the end, the whole configuration should be like this:
 In `provider.tf`
