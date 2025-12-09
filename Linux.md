@@ -1,4 +1,4 @@
-Hello friends, i would like to talk about linux how it works what its arch, what the types of networks used and more in this doc
+Hello everyone, in this document I will introduce Linux, explain how it works, describe its architecture, explore the network types used in virtual environments, and cover additional important concepts. The goal is to provide a clear and practical understanding of Linux from both a structural and operational perspective.
 
 ## Linux Architecture
 
