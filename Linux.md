@@ -161,7 +161,7 @@ if you need only the date as a day month year `date +%X`
 `file` is used to check the type of the file like `file /etc/passwd` 
 it will display that `etc/passwd: ASCII text`
 
-## Display content of the file into screen
+#### Display content of the file into screen
 
 ##### cat command
 if i typed `cat /etc/passwd` it will display the content of this file 
