@@ -98,5 +98,65 @@ The character at the end of the prompt tells you the user privilege level:
 
 This visual indicator helps you avoid running privileged commands unintentionally.
 
+## Understanding command syntax
+
+The command consist of 3 things Command, Option(s), Argument(s)
+
+Example:
+
+`usermod -L user01`
+this mean `usermod` is the command, `-L` which is the option that mean lock, `user01` which is the user which will lock it so the full meaning of the syntax is to lock the password of the `user01`
+
+`ls -l /dev`
+this mean `ls` is to list `-l` means long list and `/dev` is the directory which we want to list its content
+
+
+## Basic commands
+
+##### date command
+`date` command is used to display the whole date like this:
+`MON SEP 26 12:17:58 AM EET 2025`
+
+if you need to print only the time only so you need to be spacefic in your option as well like this
+`date +%R` it will display 
+`1:23`
+
+if you need only the date as a day month year `date +%X`
+`12/09/2025`
+
+##### passwd command 
+`passwd` is used to change the password of the current user
+
+##### file command
+`file` is used to check the type of the file like `file /etc/passwd` 
+it will display that `etc/passwd: ASCII text`
+
+## Display content of the file into screen
+
+##### cat command
+if i typed `cat /etc/passwd` it will display the content of this file 
+i can also display multiple contnet like `cat file1 file2` 
+
+##### less command 
+`less` command displays the content page by page and you can swape between pages by click space
+
+##### head/tail command 
+`head` display the first 10 lines of the file you can also modify the option by adding `-n` then the number of the lines you need to display like:
+`head -n 5 file1` this means display the fist 5 lines of the file1 
+
+`tail` is the same concept but it displays the last 10 lines and also you can modify the lines you need to display
+
+##### History command
+`history` used to list the last pervious commands used, it will return:
+`
+1 date
+2 date +%R
+3 cat /etc/passwd
+`
+
+- you can choose a spaecfic command again by `!` then the number of the command like 3 for example `!3` so it will return the `cat /etc/passwd`
+
+- you can also write `!!` means point to the last command ran which is `cat /etc/passwd`
+   
 
 
