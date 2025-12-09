@@ -110,7 +110,37 @@ this mean `usermod` is the command, `-L` which is the option that mean lock, `us
 `ls -l /dev`
 this mean `ls` is to list `-l` means long list and `/dev` is the directory which we want to list its content
 
+## The File System Hierarchy
+- /usr: installed software, shared libraries, include files and read-only program data, important subdirectoreis like:
+   - /usr/bin: user commands
+   - /usr/sbin: system admin commands
+   - /usr/local: localy customized softwrare
+ 
+- /etc: configuration files spaecfic to this system
+- /var: variable data specfic to that system that should persist between boots. Files that dynnamicaly change such as: databases, cache dirctories, log files and website content may be found under `/var`
+- /home: home directories where the users stored thier personal data and configuration files
+- /root: home directory related to the super user
+- /tmp: a world-writable space for temporary files
+- /boot: files that neede in order to start the boot process
+- /dev: contain special device files that are used by the system to access hardware.\
+   
 
+<img width="1176" height="479" alt="image" src="https://github.com/user-attachments/assets/dba7597d-f117-4c13-b5fa-a2d954271963" />
+
+## File Types
+
+<img width="1124" height="461" alt="image" src="https://github.com/user-attachments/assets/07dec5d1-0ea7-4669-b432-d348c69b33fe" />
+
+` ls -l`
+
+<img width="1016" height="393" alt="image" src="https://github.com/user-attachments/assets/5112bb18-1188-4a54-a48e-38d3f61b9a18" />
+
+## Rules for Naming in linux
+
+- It should be descriptive and only alphanumric characters UPPERCASE, lowercase, numbers,sympols 
+- Also are case senstive and filename starting by `.` are hidden
+
+  
 ## Basic commands
 
 ##### date command
@@ -158,5 +188,60 @@ i can also display multiple contnet like `cat file1 file2`
 
 - you can also write `!!` means point to the last command ran which is `cat /etc/passwd`
    
+#### pwd command
+`pwd` stands for print working directory, used to display the full path name of the current working directory of that shell.
+
+For example:
+`pwd`
+`/home/youssef
+#### cd command
+`cd` stands for change directory used to change your shell's directory if you did not specify any argument
+
+For example:
+if you are at home direcotry and you want to go to youssef directory so
+`cd /home/youssef` or `cd /youssef` or `cd` directly 
+
+If you want to go back to the parent directory
+`cd ..` will make one step back.
+
+#### ls command
+`ls` used for listing the content of the directory, it has multiple options.
+`ls -l` for long listing.
+`ls -a` for listing all files including the hidden files.
+`ls -R` recursive, to include the contents of all subdirectories.
+`ls -lh` for humen readable listing.
+`ls -lt` for sorting by last time modified at the top.
+`ls -ltr` same like `-lt` but with revers order which make the last modifeid at the bottom.
+
+
+#### Line file mangment commands
+when managing files, you need to be able to create, copy, remove, and move.
+
+##### creating directory
+`mkdir` used to make directories
+
+##### copy files
+`cp file new-file` for copying the content in the file.
+`cp -r directory new-directory` copy directory and its content
+
+##### move file
+`mv file new-file`
+
+##### remove files/direcotries
+`rm file` for remove files
+`rm -r directory` for remove directories
+`rmdir directory` remove empty dirs
+
+
+#### creating file
+you can create files by differnet ways
+first one you can use `touch file` or if you want to create multiple files at ones `touch file1 file2 FILE3` it is case senstive so take care.
+second way is to specify the path ` touch /home/youssef/code.py`
+
+
+
+
+
+
 
 
