@@ -332,10 +332,8 @@ By default, `rm` does not remove directories unless you use options.
 
 `rmdir directory` remove empty dirs
 
-⚠️ Warning
-
-Use `rm -rf` carefully. Running it on the wrong path can delete critical system files or your entire filesystem.
-
+> [!WARNING]
+> Use `rm -rf` carefully. Running it on the wrong path can delete critical system files or your entire filesystem.
 
 #### creating file
 you can create files by differnet ways
@@ -384,6 +382,146 @@ The `-i` option ignores upper/lower case.
 This searches for nginx in running processes.
 
 
+#### Input and Output Redirection in Linux
+
+In Linux, commands normally take input from the keyboard (stdin) and display output on the screen (stdout).
+With redirection, you can change this behavior to read input from files and write output to files or other commands.
+
+Linux uses three standard streams:
+
+stdin:   - Standard Input
+         - Input to a program (keyboard)
+         - File Descriptor (0)
+
+stdout:  - standard output
+         - Normal output (screen)
+         - File Descriptor (1)
+
+stderr:  - Standard Error
+         - Error messages
+         - File Descriptor (2)
 
 
+1- Redirecting Output (`>` and `>>`)
+`>` — Overwrite Output to a File.
+Redirect command output to a file, replacing its contents:
+`
+ls > output.txt
+`
+- Creates output.txt if it doesn’t exist.
+- Overwrites the file if it exists.
+
+2- `>>` — Append Output to a File
+Append output to an existing file:
+`echo "New line" >> output.txt`
+
+- Adds to the bottom without deleting existing content.
+
+2- Redirecting Input (`<`)
+`<` — Use File as Command Input
+
+Instead of typing input manually, read it from a file:
+`sort < names.txt`
+
+- Reads names from names.txt and sorts them.
+
+
+3- Redirecting Errors (`2>` and `2>>`)
+`>` — Store Errors
+
+Redirect error messages to a file:
+`grep "error" file.txt 2> errors.log`
+
+`2>>` — Append Errors
+
+Append error messages:
+`grep "error" file.txt 2>> errors.log`
+
+Combine stdout and stderr into one file:
+`command > output.log 2>&1`
+
+#### Piping in Linux
+
+In Linux, a pipe (`|`) is used to connect the output of one command to the input of another command.
+This allows you to build powerful command chains without creating temporary files.
+
+A pipe works with standard streams as we said before.
+
+- It takes stdout (standard output) from the left command
+
+- And feeds it into stdin (standard input) of the right command
+
+  Basic syntx:
+  `command1 | command2`
+- `command1`: produces output
+
+- `command2`: processes that output
+
+Example:
+`ls | sort`
+`ls` shows filenames while `sort` sorts them alphabetically.
+
+More examples:
+1- Count the Number of `.txt` Files
+`ls *.txt | wc -l`
+`ls` list .txt files and `wc -l` stands for "word count" used to count lines, in our example it uses to count number of files
+
+2- Find Running Process
+`ps aux | grep nginx`
+
+`ps aux` list processes and `grep nginx` filter results
+
+
+#### Text Editors in Linux (Vim and Nano)
+
+When working in Linux, especially on servers and CLI environments, you often need to create or edit text files (config files, scripts, code, logs). Two popular terminal-based text editors are Vim and Nano.
+
+They serve the same purpose but are designed for different user experiences.
+
+##### 1. Nano Editor
+
+Nano is a simple, user-friendly text editor ideal for beginners.
+It is easy to learn, shows shortcuts at the bottom of the screen, and works like a normal text editor.
+
+`nano filename.txt
+`
+If the file doesn’t exist, Nano will create it.
+
+Common Shortcuts:
+Shortcuts use Ctrl (represented as ^ in the menu):
+
+- save file: Ctrl + O
+- Exit: Ctrl + X
+- Search text: Ctrl + W
+- Cut line: Ctrl + K
+- paste: Ctrl + U
+
+  Nano shows help and shortcuts at the bottom, making it very beginner-friendly.
+
+##### 2. Vim Editor
+Vim (Vi Improved) is a powerful, feature-rich editor designed for advanced users.
+It gives high control for editing, searching, macros, automation, and programming.
+It works in different modes (the main difference from Nano).
+
+`vim filename.txt
+`
+
+Vim Modes (Important):
+Normal Mode: Navigate, delete, copy text to Return to Normal Mode `Esc`
+Insert Mode: Type text normally, Enter Insert Mode `i`
+Command Mode: Run commands (`:w`, `:q`, etc.)
+
+Common commands:
+Save: `:w`
+Quit: `:q`
+Save and Quit: `:wq`
+Force quit: `:!q`
+Move up/down: `k`/`j`
+Move left/right: `h`/`l`
+Go to top line: `gg`
+got to bottom: `G`
+delete word: `dw`
+copy line: `yy`
+paste line: `p`
+undo: `u`
 
