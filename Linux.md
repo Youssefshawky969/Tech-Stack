@@ -140,7 +140,67 @@ this mean `ls` is to list `-l` means long list and `/dev` is the directory which
 - It should be descriptive and only alphanumric characters UPPERCASE, lowercase, numbers,sympols 
 - Also are case senstive and filename starting by `.` are hidden
 
-  
+
+
+## Inode and Inode Numbers
+
+An inode (index node) is a data structure used by the Linux filesystem to store metadata about a file or directory.
+It does not store the file name or the actual file data. Instead, it stores information about the file.
+
+Each file, directory, or special object on a Linux filesystem has an inode.
+
+An inode contains important metadata, such as:
+
+- File type (file, directory, link, device, etc.)
+
+- Owner (UID)
+
+- Group (GID)
+
+- Permissions (read, write, execute)
+
+- File size
+
+- Timestamps:
+
+   - Created time
+
+   - Modified time
+
+   - Access time
+
+- Number of links (hard links)
+
+Pointers to data blocks (where the content is stored on disk)
+
+In short:
+
+An inode knows everything about a file except its name and actual data.
+
+Each inode has a unique inode number within the filesystem.
+This number acts like the “ID” of the file.
+
+- The inode number points to the inode.
+
+- The file name links to the inode number.
+
+- Hard links use the same inode number.
+
+- Multiple filenames can point to the same inode.
+
+- The file data is removed only when all hard links are deleted.
+
+Example:
+` ln file1 file2`
+Now `file1` and `file2` share the same inode number.
+
+You can check the inode number using the `ls` command:
+`ls -li`
+
+Output example:
+`12345 -rw-r--r-- 1 user user 1024 Feb 10 10:00 file.txt`
+`12345` is the inode number.
+
 ## Basic commands
 
 ##### date command
@@ -225,12 +285,56 @@ when managing files, you need to be able to create, copy, remove, and move.
 `cp -r directory new-directory` copy directory and its content
 
 ##### move file
-`mv file new-file`
+The `mv` command in Linux is used to move or rename files and directories. It can transfer a file from one location to another, or change the file name in the same location.
+` mv [options] source target`
+
+- source: the file or directory you want to move or rename
+- target: the destination path or the new name
+
+1- move files:
+To move a file from one directory to another 
+` mv file.txt /home/user/Documents/`
+This command moves file.txt into the Documents directory.
+
+2- Rename a File:
+To rename a file in the same directory
+`mv oldname.txt newname.txt`
+
+3- Move a Directory
+`mv myfolder /home/user/Projects/`
+
+options used with this command
+`-i` : Interactive mode (asks before overwriting)
+`f` : Force move (overwrite without prompt)
+`-v` : Verbose output (shows what is happening)
+
+
 
 ##### remove files/direcotries
-`rm file` for remove files
-`rm -r directory` for remove directories
+
+The `rm` command in Linux is used to delete files and directories. When you remove something with `rm`, it does not go to the trash — it is permanently deleted.
+Basic Syntax:
+`rm [options] file`
+
+1- Remove file
+To delete a file
+`rm file`
+This permanently removes file.txt.
+
+2- Remove Multiple Files
+`rm file1.txt file2.txt file3.txt`
+
+3- delete directories
+By default, `rm` does not remove directories unless you use options.
+
+`rm -r directory` 
+-r (recursive) removes the directory and everything inside it.
+
 `rmdir directory` remove empty dirs
+
+⚠️ Warning
+
+Use `rm -rf` carefully. Running it on the wrong path can delete critical system files or your entire filesystem.
 
 
 #### creating file
@@ -239,7 +343,45 @@ first one you can use `touch file` or if you want to create multiple files at on
 second way is to specify the path ` touch /home/youssef/code.py`
 
 
+#### grep Command (Search for Text Patterns)
+The grep command is used to search for specific text patterns inside files or command outputs. It supports regular expressions, which makes it powerful for filtering and finding matching lines.
 
+The name grep comes from the ed text editor command:
+
+"globally search a regular expression and print."
+
+Basic Syntax:
+`grep [options] pattern file`
+
+- pattern: text or regular expression to search for
+- file: file(s) to search in
+
+1- Search for a Word in a File
+`grep "error" logfile.txt`
+This prints all lines containing the word error.
+
+2- Case-Insensitive Search
+`grep -i "error" logfile.txt`
+The `-i` option ignores upper/lower case.
+
+3- Search in Multiple Files
+`grep "error" *.log`
+
+4- Show Line Numbers
+`grep -n "error" logfile.txt`
+`-n` prints the line number with each match.
+
+5- Count Matches
+`grep -c "error" logfile.txt`
+`-c` shows how many lines match the pattern.
+
+6- Search Recursively in Directories
+`grep -r "error" /var/log`
+`-r` (recursive) searches all files inside directories.
+
+7- Search Command Output with Pipes
+`ps aux | grep nginx`
+This searches for nginx in running processes.
 
 
 
