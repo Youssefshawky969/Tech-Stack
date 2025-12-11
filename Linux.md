@@ -292,15 +292,18 @@ The `mv` command in Linux is used to move or rename files and directories. It ca
 - target: the destination path or the new name
 
 1- move files:
+
 To move a file from one directory to another 
 ` mv file.txt /home/user/Documents/`
 This command moves file.txt into the Documents directory.
 
 2- Rename a File:
+
 To rename a file in the same directory
 `mv oldname.txt newname.txt`
 
 3- Move a Directory
+
 `mv myfolder /home/user/Projects/`
 
 options used with this command
@@ -317,14 +320,17 @@ Basic Syntax:
 `rm [options] file`
 
 1- Remove file
+
 To delete a file
 `rm file`
 This permanently removes file.txt.
 
 2- Remove Multiple Files
+
 `rm file1.txt file2.txt file3.txt`
 
 3- delete directories
+
 By default, `rm` does not remove directories unless you use options.
 
 `rm -r directory` 
@@ -355,29 +361,36 @@ Basic Syntax:
 - file: file(s) to search in
 
 1- Search for a Word in a File
+
 `grep "error" logfile.txt`
 This prints all lines containing the word error.
 
 2- Case-Insensitive Search
+
 `grep -i "error" logfile.txt`
 The `-i` option ignores upper/lower case.
 
 3- Search in Multiple Files
+
 `grep "error" *.log`
 
 4- Show Line Numbers
+
 `grep -n "error" logfile.txt`
 `-n` prints the line number with each match.
 
 5- Count Matches
+
 `grep -c "error" logfile.txt`
 `-c` shows how many lines match the pattern.
 
 6- Search Recursively in Directories
+
 `grep -r "error" /var/log`
 `-r` (recursive) searches all files inside directories.
 
 7- Search Command Output with Pipes
+
 `ps aux | grep nginx`
 This searches for nginx in running processes.
 
@@ -403,6 +416,7 @@ stderr:  - Standard Error
 
 
 1- Redirecting Output (`>` and `>>`)
+
 `>` — Overwrite Output to a File.
 Redirect command output to a file, replacing its contents:
 `
@@ -412,12 +426,14 @@ ls > output.txt
 - Overwrites the file if it exists.
 
 2- `>>` — Append Output to a File
+
 Append output to an existing file:
 `echo "New line" >> output.txt`
 
 - Adds to the bottom without deleting existing content.
 
 2- Redirecting Input (`<`)
+
 `<` — Use File as Command Input
 
 Instead of typing input manually, read it from a file:
@@ -427,6 +443,7 @@ Instead of typing input manually, read it from a file:
 
 
 3- Redirecting Errors (`2>` and `2>>`)
+
 `>` — Store Errors
 
 Redirect error messages to a file:
@@ -458,10 +475,12 @@ A pipe works with standard streams as we said before.
 - `command2`: processes that output
 
 Example:
+
 `ls | sort`
 `ls` shows filenames while `sort` sorts them alphabetically.
 
 More examples:
+
 1- Count the Number of `.txt` Files
 `ls *.txt | wc -l`
 `ls` list .txt files and `wc -l` stands for "word count" used to count lines, in our example it uses to count number of files
@@ -507,21 +526,74 @@ It works in different modes (the main difference from Nano).
 `
 
 Vim Modes (Important):
+
 Normal Mode: Navigate, delete, copy text to Return to Normal Mode `Esc`
 Insert Mode: Type text normally, Enter Insert Mode `i`
 Command Mode: Run commands (`:w`, `:q`, etc.)
 
 Common commands:
+
 Save: `:w`
+
 Quit: `:q`
+
 Save and Quit: `:wq`
+
 Force quit: `:!q`
+
 Move up/down: `k`/`j`
+
 Move left/right: `h`/`l`
+
 Go to top line: `gg`
+
 got to bottom: `G`
+
 delete word: `dw`
+
 copy line: `yy`
+
 paste line: `p`
+
 undo: `u`
 
+#### User and Group Management in Linux
+
+Linux is a multi-user operating system, meaning multiple users can share the same system with different permissions. To manage access control, Linux uses UIDs and GIDs, along with tools to manage users, groups, and privileges.
+
+1- User Identifier (UID)
+
+A User Identifier (UID) is a unique number assigned to each user on a Linux system.
+
+- root (superuser) = 0
+- System/service accounts = 1-999
+- Normal user accounts = 1000+
+
+You can check your UID using:
+
+`id -u
+`
+
+The file /etc/passwd stores user information. Example entry:
+
+`mohamed:x:1001:1001::/home/mohamed:/bin/bash
+`
+
+- 1001 = UID
+- 1001 = Primary GID
+
+2- Group Identifier (GID)
+
+A Group Identifier (GID) is similar to UID but for groups. Groups allow you to assign permissions to multiple users at once.
+
+Group information is stored in `/etc/group`.
+
+Example:
+
+`id
+`
+
+`developers:x:2000:mohamed,ahmed`
+
+- 2000 = GID
+- members = mohamed, ahmed
