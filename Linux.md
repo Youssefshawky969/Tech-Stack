@@ -597,3 +597,182 @@ Example:
 
 - 2000 = GID
 - members = mohamed, ahmed
+
+3- Gaining Superuser Privileges
+
+The superuser (root) has full control over the system. There are two main ways to get root privileges.
+
+- Using `sudo`
+
+  Runs a single command as root.
+
+  `sudo command`
+  
+  or
+  
+  To start a root shell:
+
+  `sudo -i`
+
+- Switching to root user
+  
+  If you know the root password
+
+  `su - `
+
+  4- Changing Passwords
+
+  - Change your own password
+ 
+    `passwd`
+
+  - Change another user's password (requires root)
+
+    `sudo passwd username`
+
+5- Creating Users
+
+- Create a new user
+
+  `sudo useradd username`
+
+- Create a user and generate a home directory automatically
+
+   `sudo useradd -m username`
+
+6- Modifying Users
+
+- Add user to a group
+
+  `sudo usermod -aG groupname username`
+
+7- Creating Groups `<developers>`
+
+`sudo groupadd developers`
+
+>[!tip]
+> Important System Files:
+>
+>`/etc/passwd` for Stores user information (UID, home directory, shell)
+>
+>`/etc/shadow` for Stores encrypted passwords
+>
+>`/etc/group` for Stores group info
+
+
+### Controlling Access to Files in Linux
+
+Linux controls access to files and directories using a permission and ownership model. This ensures system security by defining who can read, write, or execute a file or directory.
+
+1-  File Ownership
+
+  Every file and directory in Linux has:
+
+   -   User (Owner) – the file creator or assigned owner
+
+   -   Group – a group of users with shared access
+
+   -   Others – all other users on the system
+
+You can view ownership using
+
+` ls -l`
+
+It will return somthing like this
+
+` -rw-r----- 1 mohamed developers 1024 file.txt
+`
+
+- Owner: mohamed
+
+- Group: developers
+
+2- File Permissions
+
+Permissions define what actions are allowed.
+
+Permission Types:
+`r` for read
+
+`w` for write
+
+`x` for excute
+
+Permission Structure:
+
+`-rwxr-x---
+`
+
+`-` for file type 
+`rwx` Owner permissions
+`r-x` Group permissions
+`---` Others permissions
+
+We have two different way to grant permission to user or group 
+
+1- Symbolic Mode
+
+ ` chmod u+x file.sh
+    chmod g-w file.txt
+    chmod o=r file.txt`
+
+- `u` user , `g` group `o` others, `a` all
+
+2- Numeric Mode (Octal)
+
+`chmod 755 script.sh
+`
+000 = 0
+
+001 = 1
+
+010 = 2
+
+011 = 3
+
+100 = 4
+
+101 = 5
+
+110 = 6
+
+111 = 7
+
+For file structure every `1` means active and `0` means disactive.
+
+So `000` mean `---------` no permission for owners, no permission for groups, no permission for others.
+
+For `755`  means `rwx` for owner because it represent as `111` in octet, `r-x` for group because it represent as `101` and same for others 
+
+so Whether the group membars of the owner of the file or others can only read and excute the file, and only the owner have the full permission.
+
+
+3- Changing Ownership (`chown` and `chgrp`)
+
+- Change owner
+
+  ` sudo chown user file.txt`
+
+- Change group
+
+    ` sudo chgrp developers file.txt`
+
+- Change owner and group together
+
+    ` sudo chown user:developers file.txt`
+
+    same concept in directory permission
+
+    ` chmod 755 /project`
+
+  4- Special Permissions (Advanced)
+
+  Program runs with owner's privileges.
+
+  `chmod u+s program`
+
+  Files inherit group ownership.
+  
+  `chmod g+s directory`
+
+  
