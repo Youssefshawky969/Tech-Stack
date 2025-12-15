@@ -712,9 +712,11 @@ We have two different way to grant permission to user or group
 
 1- Symbolic Mode
 
- ` chmod u+x file.sh
+ ```bash
+    chmod u+x file.sh
     chmod g-w file.txt
-    chmod o=r file.txt`
+    chmod o=r file.txt
+```
 
 - `u` user , `g` group `o` others, `a` all
 
@@ -751,28 +753,39 @@ so Whether the group membars of the owner of the file or others can only read an
 
 - Change owner
 
-  ` sudo chown user file.txt`
-
+  ```bash
+  sudo chown user file.txt
+  ```
 - Change group
 
-    ` sudo chgrp developers file.txt`
+    ```bash
+    sudo chgrp developers file.txt
+    ```
 
 - Change owner and group together
 
-    ` sudo chown user:developers file.txt`
+    ```bash
+  sudo chown user:developers file.txt
+    ```
 
     same concept in directory permission
 
-    ` chmod 755 /project`
+    ```bash
+   chmod 755 /project
+    ```
 
   4- Special Permissions (Advanced)
 
   Program runs with owner's privileges.
 
-  `chmod u+s program`
+  ```bash
+  chmod u+s program
+  ```
 
   Files inherit group ownership.
   
-  `chmod g+s directory`
+  ```bash
+  chmod g+s directory
+  ```
 
   
