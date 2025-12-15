@@ -24,7 +24,7 @@ Now, you need to login into github.com then create a new repo
 - Clone your repo then
 - in your machine ` git clone <link provided>`
 
-   so thats is good now you have cloned your repo in your machine
+   So thats is good now you have cloned your repo in your machine
 
   If you list files
 
@@ -35,7 +35,7 @@ Now, you need to login into github.com then create a new repo
   `
   README.md
   `
-  for example, it may vary you may have more files in your repo.
+  For example, it may vary you may have more files in your repo.
 
   before we work in our file, we need to tell git first who we are.
   
@@ -43,11 +43,11 @@ Now, you need to login into github.com then create a new repo
   git config --global user.email "yshawky@gmail.com"
   `
    
-you can edit your file by
+ You can edit your file by
 
 `nano README.md` 
 
-edit what you need then commit the changes by
+Edit what you need then commit the changes by
 
 `
 git status
