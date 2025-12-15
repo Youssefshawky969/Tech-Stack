@@ -17,8 +17,8 @@ sudo apt install git -y
 
 Now, you need to login into github.com then create a new repo 
 - go to your profile icon, then settings,
-- hit the SSSH keys tap
-- click "New SSH key"
+- hit the `SSH keys` tap
+- click `New SSH key`
 - Grap your publick key from your machine ` cat .ssh/id_225519.pub` we generated before
 - Paste the key into the box then save
 - Clone your repo then
