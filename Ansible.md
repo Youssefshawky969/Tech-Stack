@@ -26,7 +26,11 @@ Now, you need to login into github.com then create a new repo
 
    so thats is good now you have cloned your repo in your machine
 
-  if you list `ls` the expected output
+  If you list files
+
+   `ls`
+
+  The expected output
   
   `
   README.md
