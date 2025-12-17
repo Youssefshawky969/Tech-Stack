@@ -46,8 +46,8 @@ Now, you need to login into github.com then create a new repo
   before we work in our file, we need to tell git first who we are.
   
   ```bash
-  git config --global user.name "youssef shawky"
-  git config --global user.email "yshawky@gmail.com"
+  git config --global user.name "< your user name >"
+  git config --global user.email "< your email address >"
   ```
    
   You can edit your file by
@@ -67,5 +67,6 @@ git push origin master
 
 
 That's it, very simple :) 
+
 Thanks for reading.
 
