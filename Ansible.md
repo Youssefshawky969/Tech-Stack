@@ -111,7 +111,7 @@ Handlers are special tasks, usually defined in a `handlers` section, that run on
 
 Together, these attributes and sections allow a playbook to clearly define intent, control execution flow, manage system state through parameters like `state`, and deliver reliable, repeatable automation across different environments. We will see more examples further.
 
-#### State
+### State
 
 As we said before, state used to define the desired end state of a resourse. 
 
@@ -145,7 +145,7 @@ what about if i need to uninstall it:
       state: absent
 ```
 
-#### When 
+### When 
 
 The when attribute in Ansible is used to control whether a task runs or is skipped based on a condition. Simply put, it allows you to tell Ansible “run this task only if this condition is true.” This is important because environments are not always the same, and you often need different behavior depending on the operating system, variable values, host roles, or the result of previous tasks. Using `when` makes playbooks flexible, safe, and reusable, instead of hard-coding separate playbooks for each case.
 
@@ -182,7 +182,7 @@ Here, the task runs only if the host is Ubuntu; on other systems, it is skipped.
 
 Ansible gathers system facts at the start of the playbook, including the operating system family (`ansible_os_family`). When the playbook runs, Ansible evaluates each when condition per host. If the condition is true, the task runs; if not, the task is skipped. Debian-based systems execute the `apt` task, while CentOS/RHEL systems execute the `dnf` task. avoids writing separate playbooks for each distribution, prevents errors from running the wrong package manager, and keeps automation portable, clean, and safe across mixed environments.
 
-#### Variables
+### Variables
 
 If you have different Linux distributions and you want to handle them using variables instead of hard-coding `apt` or `dnf` in tasks, the idea is to abstract the difference into variables and let the playbook logic stay the same. This makes the playbook cleaner, reusable, and easier to extend when new distributions are added.
 
@@ -267,4 +267,168 @@ This playbook targets all hosts and uses the when condition with Ansible facts t
 
 The play runs on every server in the inventory, each task runs only on the matching OS, and Tasks that don’t match the OS are skipped automatically.
 
+### Tags
 
+Ansible tags are used to label tasks (or plays) so you can run or skip specific parts of a playbook without executing everything. They are especially useful in large playbooks like the example mentioned before, where you have multiple OS-specific tasks (CentOS vs Ubuntu) and different responsibilities (updates vs package installation).
+
+```bash
+
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Install system updates (CentOS)
+      tags: always
+      dnf:
+        update_only: yes
+        update_cache: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: Install system updates (Ubuntu)
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+
+host: web_server
+become: true
+tasks
+    - name: Install Apache and PHP on Ubuntu servers
+      tags: apache,apache2,ubuntu
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install Apache and PHP on CentOS servers
+      tags: apache,centos,httpd
+      dnf:
+        name:
+          - httpd
+          - php
+        state: present
+      when: ansible_distribution == "CentOS"
+host: db_server
+become: true
+tasks:
+    - name: install maraia db package (Centos
+      tags: centos,db,maraidb
+      dnf:
+        name: mariadb
+        state: latest
+      when: ansible_distribution == "CentOS"
+
+    - name: install maraia db package (Ubuntu)
+      tags: ubuntu,db,maraidb
+      dnf:
+        name: mariadb-server
+        state: latest
+      when: ansible_distribution == "Ubuntu"
+
+
+```
+This playbook is organized into multiple plays and uses tags to give you fine-grained control over what runs and when, especially in a mixed environment with web servers, database servers, and different Linux distributions.
+
+### Managing file
+
+Managing files in Ansible means creating, copying, modifying, templating, fetching, and deleting files or directories on managed nodes in a declarative and idempotent way. Below are the most common file-related modules, why we use them, and clear examples you can directly relate to real DevOps work.
+
+1- Use `file` when you want to control the existence or attributes of a file or directory.
+
+- Create a directory
+  
+```bash
+- name: Create app directory
+  file:
+    path: /opt/myapp
+    state: directory
+    owner: appuser
+    group: appuser
+    mode: "0755"
+```
+
+- Create an empty file
+
+  ```bash
+  - name: Create log file
+  file:
+    path: /var/log/myapp.log
+    state: touch
+  ```
+
+- Delete a file or directory
+  ```bash
+  - name: Remove old config
+  file:
+    path: /etc/myapp.conf
+    state: absent
+  ```
+
+ 2- Use `copy` to push static files. 
+
+ ```bash
+- name: Copy application config
+  copy:
+    src: files/app.conf
+    dest: /etc/myapp/app.conf
+    owner: root
+    group: root
+    mode: "0644"
+  ```
+
+3- Use fetch for backups and audits.
+
+```bash
+- name: Fetch Apache config
+  fetch:
+    src: /etc/httpd/conf/httpd.conf
+    dest: ./backups/
+```
+
+4- Unarchive files
+
+```bash
+- name: Extract app archive
+  unarchive:
+    src: /opt/app.tar.gz
+    dest: /opt/myapp
+    remote_src: yes
+```
+
+### Adding users and bootstrapping
+
+Adding users and bootstrapping in Ansible is about preparing a fresh server so it’s ready for automation and day-to-day operations. Bootstrapping usually includes creating users, setting SSH access, configuring sudo, and locking down root access. Below is a clear, practical explanation with examples you can reuse.
+
+- Create a normal user
+  ```bash
+  - name: Create ansible user
+  user:
+    name: ansible
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+    state: present
+  ```
+
+- Managing SSH keys
+  ```bash
+  - name: Add SSH key for ansible user
+  authorized_key:
+    user: ansible
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  ```
+This used to enable passwordless SSH (best practice)
+
+- Grant sudo access (passwordless)
+  ```bash
+  - name: Allow ansible user passwordless sudo
+  copy:
+    dest: /etc/sudoers.d/ansible
+    content: "ansible ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"
+  ```
