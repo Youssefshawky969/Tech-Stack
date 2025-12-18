@@ -1,7 +1,8 @@
 ## SSH 
 
 ## Git
-### Intro
+
+### Overview
 
 When we talk about tech company dealing with servers, code, new feature, and configuration everyday. Its important to have a centerlized repo or registry containiing the code andour configuration.
 In this part of the series we will get in touch little bit with Git, not deep dive but only the core basics.
@@ -72,6 +73,66 @@ Thanks for reading.
 
 
 ## Running ad-hoc command
+
+## Modules
+
+Ansible modules are the building blocks of automation. Each module performs one specific action (install a package, manage a service, copy a file, create a user, run a command). In a playbook, every task calls exactly one module with parameters that describe the desired state. Ansible then ensures the system matches that state in an idempotent way (safe to run repeatedly).
+
+How we use module?
+
+A module is used inside a task with this general pattern:
+
+```bash
+- name: Human-readable task description
+  module_name:
+    parameter1: value
+    parameter2: value
+```
+
+You choose the module based on what you want to manage, then set parameters (often including `state`) to describe the end result. Ansible handles SSH, execution, and change detection.
+
+Common modules with examples:
+
+- Package management
+  ```bash
+  - name: Install nginx
+  package:
+    name: nginx
+    state: present
+  ```
+(`package` auto-selects apt/dnf/yum based on OS.)
+  
+- Service management
+  ```bash
+  - name: Ensure nginx is running
+  service:
+    name: nginx
+    state: started
+    enabled: true
+  ```
+- File management
+  ```bash
+  - name: Create directory
+  file:
+    path: /opt/app
+    state: directory
+    mode: "0755"
+  ```
+- Copy files
+  ```bash
+  - name: Copy config
+  copy:
+    src: files/app.conf
+    dest: /etc/app.conf
+  ```
+
+Ansible’s documentation is the authoritative source for all modules and collections. 
+
+- Go to docs.ansible.com → Ansible Collections / Module Index.
+
+- Search by keyword (e.g., package, k8s, ios).
+
+- Open a module page to see parameters, examples, return values, and notes.
 
 ## Playbook
 
@@ -458,7 +519,7 @@ roles/
     └── files/
 ```
 
-YOU the mention the role in the playbook file:
+You then mention the role in the playbook file:
 
 ```bash
 ---
