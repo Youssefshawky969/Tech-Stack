@@ -277,7 +277,7 @@ What if we have many hosts with different OS and we want to install apache and p
 
 Simply is to grouping them by its role like if it work as Web or DB 
 
-IN `inventroy` file
+In `inventroy` file
 ```bash
 [web]
 <server 1 Debian-based IP> 
@@ -393,6 +393,7 @@ tasks:
 
 
 ```
+
 This playbook is organized into multiple plays and uses tags to give you fine-grained control over what runs and when, especially in a mixed environment with web servers, database servers, and different Linux distributions.
 
 ### Managing file
