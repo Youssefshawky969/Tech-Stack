@@ -74,6 +74,22 @@ Thanks for reading.
 
 ## Running ad-hoc command
 
+Ansible ad-hoc commands are one-line commands used to run a single task on one or more hosts without writing a playbook. They are ideal for quick checks, troubleshooting, audits, and emergency actions, but not for complex or repeatable workflows (those belong in playbooks).
+
+- Basic syntax
+  ```bash
+  ansible <host-pattern> -m <module> -a "<module-arguments>" [options]
+  ```
+
+-   `-host-pattern`: which hosts to target (e.g., all, web, db, web1)
+
+-  `-m`: module name
+
+- `-a`: module arguments
+
+-  Options: `-i `(inventory), `-u` (user), `--become`, `--ask-pass`, `--tags` (playbooks only)  
+
+
 ## Modules
 
 Ansible modules are the building blocks of automation. Each module performs one specific action (install a package, manage a service, copy a file, create a user, run a command). In a playbook, every task calls exactly one module with parameters that describe the desired state. Ansible then ensures the system matches that state in an idempotent way (safe to run repeatedly).
