@@ -271,7 +271,7 @@ In `inventory file` we will define those variables
 
 So here, playbook uses inventory variables to abstract OS-specific package names while relying on the generic package module, allowing the same playbook to work across Debian and CentOS systems without conditional logic.
 
-#### Targting nodes
+### Targting nodes
 
 What if we have many hosts with different OS and we want to install apache and php on them
 
