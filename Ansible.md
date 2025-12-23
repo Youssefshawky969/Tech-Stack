@@ -4,7 +4,7 @@
 
 ### Overview
 
-When we talk about tech company dealing with servers, code, new feature, and configuration everyday. Its important to have a centerlized repo or registry containiing the code andour configuration.
+When we talk about tech company dealing with servers, code, new feature, and configuration everyday. Its important to have a centerlized repo or registry containing the code andour configuration.
 In this part of the series we will get in touch little bit with Git, not deep dive but only the core basics.
 
 ### Configure Git
@@ -550,7 +550,7 @@ That is mean run everything defined in the web role on the web hosts.
 
 Very easy and strightfarward.
 
-Thnaks for reading.
+Thanks for reading.
 
 
 
