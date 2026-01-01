@@ -520,7 +520,7 @@ A role follows a fixed directory layout that Ansible understands automatically. 
 
 The implementation flow starts by identifying a responsibility, such as “configure a web server.” Next, you create the role structure using ansible-galaxy init <role_name>, or manually at this sturcure `/roles/web-server/tasks/main.yml` then repeat this strucure for all group or tasks you have
 
-If you make it by first way i mentioned, then you write tasks in tasks/main.yml, define variables in defaults/main.yml, add templates or files if needed, and create handlers for service reloads. After the role is ready, you attach it to a playbook using the roles keyword and target the appropriate hosts. When the playbook runs, Ansible automatically executes the role in the correct order.
+If you make it by first way i mentioned, then you write tasks in `tasks/main.yml`, define variables in `defaults/main.yml`, add templates or files if needed, and create handlers for service reloads. After the role is ready, you attach it to a playbook using the roles keyword and target the appropriate hosts. When the playbook runs, Ansible automatically executes the role in the correct order.
 
 ```bash
 roles/
@@ -538,7 +538,7 @@ roles/
 
 You then mention the role in the playbook file:
 
-```bash
+```hcl
 ---
 - name: Configure Web Servers
   hosts: web
