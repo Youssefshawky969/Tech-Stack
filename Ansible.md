@@ -538,7 +538,7 @@ roles/
 
 You then mention the role in the playbook file:
 
-```hcl
+```yaml
 ---
 - name: Configure Web Servers
   hosts: web
@@ -547,6 +547,33 @@ You then mention the role in the playbook file:
     - web
 ```
 That is mean run everything defined in the web role on the web hosts.
+
+## Handlers
+
+Ansible handlers are special tasks that are executed only when they are triggered (notified) by another task that makes a change. They are mainly used for actions that should happen only after a change, such as restarting or reloading a service when a configuration file is modified. This behavior keeps playbooks efficient, idempotent, and safe, because handlers run once at the end of a play, even if multiple tasks notify the same handler. 
+
+Example: 
+
+```bash
+- name: Configure web server
+  hosts: web
+  become: true
+  tasks:
+    - name: Copy nginx configuration
+      copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+```
+
+If the configuration file changes, the task notifies the handler. The handler is then queued and executed once after all tasks finish. If the file does not change, the handler is not triggered, and Nginx is not restarted. This ensures services are restarted only when necessary, which is a core best practice in Ansible automation.
+
 
 Very easy and strightfarward.
 
