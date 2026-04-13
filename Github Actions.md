@@ -262,6 +262,149 @@ Using the `working-directory` keyword, you can specify the working directory of 
   working-directory: ./temp
 ```
 
+## Events that trigger workflows
+
+You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
+
+Workflow triggers are events that cause a workflow to run. For more information about how to use workflow triggers
+
+### `Push`
+
+Runs your workflow when you push a commit or tag, or when you create a repository from a template.
+
+For example, you can run a workflow when the push event occurs.
+
+```yaml
+on:
+  push
+```
+> [!NOTE]
+> When a push webhook event triggers a workflow run, the Actions UI's "pushed by" field shows the account of the pusher and not the author or committer. However, if the changes are pushed to a repository using SSH authentication with a deploy key, then the "pushed by" field will be the repository admin who verified the deploy key when it was added it to a repository.
+
+#### Running your workflow only when a push to specific branches occurs
+
+You can use the `branches` or `branches-ignore` filter to configure your workflow to only run when specific branches are pushed.
+
+For example, this workflow will run when someone pushes to `main` or to a branch that starts with `releases/`.
+
+```yaml
+on:
+  push:
+    branches:
+      - 'main'
+      - 'releases/**'
+```
+
+> [!NOTE]
+> If you use both the branches filter and the paths filter, the workflow will only run when both filters are satisfied. For example, the following workflow will only run when a push that includes a change to a JavaScript (.js) file is made to a branch whose name starts with releases/:
+> ```yaml
+> on:
+>   push
+>     branches:
+>       - 'releases/**'
+>     paths
+>       - '**.js'
+> ```
+
+#### Running your workflow only when a push of specific tags occurs
+
+You can use the `tags` or `tags-ignore` filter to configure your workflow to only run when specific tags are pushed.
+
+For example, this workflow will run when someone pushes a tag that starts with `v1`.
+
+```yml
+on:
+  push:
+    tags:
+      - v1.**
+```
+
+#### Running your workflow only when a push affects specific files
+
+You can use the paths or paths-ignore filter to configure your workflow to run when a push to specific files occurs.
+
+For example, this workflow will run when someone pushes a change to a JavaScript file (`.js`):
+
+```yaml
+on:
+  push:
+    paths:
+      - '**.js'
+```
+
+### `pull request`
+
+Runs your workflow when activity on a pull request in the workflow's repository occurs. For example, if no activity types are specified, the workflow runs when a pull request is opened or reopened or when the head branch of the pull request is updated.
+
+For activity related to pull request reviews, pull request review comments, or pull request comments, use the `pull_request_review`, `pull_request_review_comment`, or `issue_comment` events instead.
+
+> [!NOTE]
+> Note that `GITHUB_SHA` for this event is the last merge commit of the pull request merge branch.
+> 
+> If you want to get the commit ID for the last commit to the head branch of the pull request, use `github.event.pull_request.head.sha` instead.
+
+For example, you can run a workflow when a pull request has been opened or reopened.
+
+```yaml
+on:
+  pull_request:
+    types: [opened, reopened]
+```
+You can use the event context to further control when jobs in your workflow will run. For example, this workflow will run when a review is requested on a pull request, but the specific_review_requested job will only run when a review by octo-team is requested.
+
+```yaml
+on:
+  pull_request:
+    types: [review_requested]
+jobs:
+  specific_review_requested:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.requested_team.name == 'octo-team'}}
+    steps:
+      - run: echo 'A review from octo-team was requested'
+```
+
+#### Running your `pull_request` workflow based on the head or base branch of a pull request
+
+You can use the `branches` or `branches-ignore` filter to configure your workflow to only run on pull requests that target specific branches.
+
+For example, this workflow will run when someone opens a pull request that targets a branch whose name starts with `releases/`:
+
+```yaml
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'releases/**'
+```
+
+>[!NOTE]
+>  It's same like `push` event.
+
+
+#### Running your pull_request workflow when a pull request merges
+
+When a pull request merges, the pull request is automatically closed. 
+
+To run a workflow when a pull request merges, use the `pull_request` `closed` event type along with a conditional that checks the merged value of the event.
+
+For example, the following workflow will run whenever a pull request closes. The `if_merged` job will only run if the pull request was also merged.
+
+```yaml
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo The PR was merged
+```
 
 
 
