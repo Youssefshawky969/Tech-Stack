@@ -1,4 +1,4 @@
-## Workflow Syntax:
+## Workflow Syntax
 
 ### `name`
 
