@@ -1,181 +1,171 @@
-[section:overview]
+## What is Docker?
 
-### Overveiw
+Docker is an open platform for developing, shipping, and running applications.
 
-Docker is a complete platform designed to build, package, ship, and run applications using lightweight, isolated containers. Containers solve the common challenge of “works on my machine” by providing the same environment everywhere: developer laptop, on-prem servers, cloud platforms, or CI/CD pipelines.
+Docker enables you to separate your applications from your infrastructure so you can deliver software quickly.
 
-Docker exists because traditional deployments face issues like dependency conflicts, complex installations, configuration mismatch across environments, and slow provisioning (VM-level).
+With Docker, you can manage your infrastructure in the same ways you manage your applications.
 
-Docker solves this by packing everything the app needs into one unit (container), ensuring consistent behavior across platforms, deploying applications fast with minimal overhead
+By taking advantage of Docker's methodologies for shipping, testing, and deploying code, you can significantly reduce the delay between writing code and running it in production.
 
-[section:architecture]
+### Docker Platform
 
-### Architecture
+Docker provides the ability to package and run an application in a loosely isolated environment called a container.
 
-##### Docker Images:
-A Docker image is a read-only template that contains OS base layer (Alpine, Ubuntu, Debian…), Application runtime (Python, Node, Java…), Dependencies, Application code, Startup instructions.
+The isolation and security let you run many containers simultaneously on a given host.
 
-Images are immutable and layered, meaning every Dockerfile instruction creates a new cached filesystem layer.
+Containers are lightweight and contain everything needed to run the application, so you don't need to rely on what's installed on the host.
 
-Example image tags:
-```
-nginx:latest
-python:3.11-slim
-myapp:1.0.4
-```
+You can share containers while you work, and be sure that everyone you share with gets the same container that works in the same way.
 
-##### Docker Containers:
+## What can I use Docker for?
 
-A container is a lightweight, isolated instance created from an image. Its characteristics that it is own filesystem, own process space, lightweight (shares host kernel), ephemeral unless connected to persistent storage, and starts in milliseconds.
+- **Fast, consistent delivery of your applications**
+  
+Docker streamlines the development lifecycle by allowing developers to work in standardized environments using local containers which provide your applications and services. 
 
-##### Docker Engine:
+Containers are great for continuous integration and continuous delivery (CI/CD) workflows.
 
-The Docker Engine is the core runtime consisting of dockerd (daemon) that manages containers & images, Docker CLI that main interaction tool, REST API that internal communication layer.
+Consider the following example scenario:
 
-##### Docker Registries:
+- Your developers write code locally and share their work with their colleagues using Docker containers.
+- They use Docker to push their applications into a test environment and run automated and manual tests.
+- When developers find bugs, they can fix them in the development environment and redeploy them to the test environment for testing and validation.
+- When testing is complete, getting the fix to the customer is as simple as pushing the updated image to the production environment.
 
-Registries store and distribute images like Docker Hub, Amazon Elastic Container Registry (ECR), GitHub Container Registry (GHCR), and Google Artifact Registry.
 
-Push Example:
+- **Responsive deployment and scaling**
 
-```
-docker tag myapp:1.0 ghcr.io/user/myapp:1.0
-docker push ghcr.io/user/myapp:1.0
-```
+Docker's container-based platform allows for highly portable workloads.
 
-##### Docker Networks:
+Docker containers can run on a developer's local laptop, on physical or virtual machines in a data center, on cloud providers, or in a mixture of environments.
 
-Docker networking models like bridge (default) that isolated network for containers, host, and none that disables networking
+Docker's portability and lightweight nature also make it easy to dynamically manage workloads, scaling up or tearing down applications and services as business needs dictate, in near real time.
 
-Example:
-```
-docker network create mynetwork
-docker run --network=mynetwork app1
-```
+- **Running more workloads on the same hardware**
 
-#### Volumes:
+  Docker is lightweight and fast.
 
-Volumes store data outside the container lifecycle ensuring persistence.
+  It provides a viable, cost-effective alternative to hypervisor-based virtual machines, so you can use more of your server capacity to achieve your business goals.
 
-Example:
-```
-docker volume create dbdata
-docker run -v dbdata:/var/lib/mysql mysql
-```
+  Docker is perfect for high density environments and for small and medium deployments where you need to do more with fewer resources.
 
-##### Dockerfile:
+  ## Docker Architecture
+  
+Docker uses a client-server architecture.
 
-A Dockerfile is a declarative file and sequential set of instructions that describes how to build a Docker image. It reads from top to bottom, and each instruction creates a new image layer.
+The Docker client talks to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers.
 
-The first instruction MUST ALWAYS be `FROM`, because it defines the base image (starting point).
+The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon.
 
-```
-FROM ubuntu:22.04
-```
-or
-```
-FROM python:3.11-slim
-```
+The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface.
 
-`LABEL` or `MAINTAINER` for metadata its optional used to describe the image, This layer is added early to maintain metadata.
+Another Docker client is Docker Compose, that lets you work with applications consisting of a set of containers.
 
-```
-LABEL maintainer="yourname@example.com"
-LABEL project="Billing System API"
-```
+>
+>
 
-`ARG` buil-time variables decalear before its usage
+<img width="1233" height="651" alt="image" src="https://github.com/user-attachments/assets/2a8ed014-0f3c-40a2-917e-90037b353f87" />
 
-```
-ARG VERSION=1.0
-```
+>
+>
 
-`ENV` enviroment variable (Runtime)
+### The Docker daemon
 
-```
-ENV APP_ENV=production
-ENV PYTHONUNBUFFERED=1
-```
+The Docker daemon (`dockerd`) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes.
 
-`WORKDIR` set working directory and sets the default path inside the container for all subsequent operations.
+A daemon can also communicate with other daemons to manage Docker services.
 
-```
-WORKDIR /app
-```
-If the folder does not exist, Docker creates it.
+### Docker Client
 
-`COPY` or `ADD` bring files into the image but `COPY` is preferred
+The Docker client (`docker`) is the primary way that many Docker users interact with Docker.
 
-```
-COPY requirements.txt .
-COPY src/ ./src
-```
+When you use commands such as `docker run`, the client sends these commands to dockerd, which carries them out. 
 
-`RUN` install dependencies and executed during build time not runtime.
+The docker command uses the Docker API.
 
-```
-RUN apt-get update && apt-get install -y build-essential
-RUN pip install -r requirements.txt
-```
+The Docker client can communicate with more than one daemon.
 
-But take care! ` Every RUN command makes a new layer and using multiple RUN commands increases image size` 
+### Docker Desktop
 
-Best practcies is using Combine commands like this:
-```
-RUN apt-get update \
- && apt-get install -y curl git \
- && apt-get clean
-```
+Docker Desktop is an easy-to-install application for your Mac, Windows, or Linux environment that enables you to build and share containerized applications and microservices.
 
-`EXPOSE` document the listen port.
-```
-EXPOSE 5000
-```
+Docker Desktop includes the Docker daemon (dockerd), the Docker client (docker), Docker Compose, Docker Content Trust, Kubernetes, and Credential Helper.
 
-`ENTRYPOINT` primary execution command defines the program that will always run.
+### Docker registries
 
-```
-ENTRYPOINT ["python", "app.py"]
-```
-This is the main executable of the container.
+A Docker registry stores Docker images.
 
-`CMD` default arguments to `ENTRYPOINT`
+Docker Hub is a public registry that anyone can use, and Docker looks for images on Docker Hub by default.
 
-```
-CMD ["--port", "5000"]
-```
+You can even run your own private registry.
 
-**Full Example:**
-if you try to dockerize python application, you probley do something like that
+When you use the `docker pull` or `docker run` commands, Docker pulls the required images from your configured registry.
 
-Dockrize:
+When you use the `docker push` command, Docker pushes your image to your configured registry.
 
-```
-FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["python", "main.py"]
-```
-Build the Image:
-```
-docker build -t myapp:1.0 .
-```
-Run the container
-```
-docker run -d -p 5000:5000 myapp:1.0
-```
-Then Tag and Push to Registry
-```
-docker tag myapp:1.0 myrepo/myapp:1.0
-docker push myrepo/myapp:1.0
+### Docker Object
+
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects.
+
+This section is a brief overview of some of those objects.
+
+#### Images
+
+An image is a read-only template with instructions for creating a Docker container.
+
+Often, an image is based on another image, with some additional customization.
+
+For example, you may build an image that is based on the Ubuntu image but includes the Apache web server and your application, as well as the configuration details needed to make your application run.
+
+You might create your own images or you might only use those created by others and published in a registry.
+
+To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it.
+
+Each instruction in a Dockerfile creates a layer in the image.
+
+When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt.
+
+This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies.
+
+#### Containers
+
+A container is a runnable instance of an image.
+
+You can create, start, stop, move, or delete a container using the Docker API or CLI.
+
+You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state.
+
+By default, a container is relatively well isolated from other containers and its host machine.
+
+You can control how isolated a container's network, storage, or other underlying subsystems are from other containers or from the host machine.
+
+A container is defined by its image as well as any configuration options you provide to it when you create or start it.
+
+When a container is removed, any changes to its state that aren't stored in persistent storage disappear.
+
+Example `docker run` command:
+
+The following command runs an `ubuntu` container, attaches interactively to your local command-line session, and runs `/bin/bash`.
+
+```bash
+$ docker run -i -t ubuntu /bin/bash
 ```
 
-After that you can deploy anywhere local machines, AWS, Kubernets
+When you run this command, the following happens:
+- If you don't have the `ubuntu` image locally, Docker pulls it from your configured registry, as though you had run `docker pull ubuntu` manually.
+- Docker creates a new container, as though you had run a `docker container create` command manually.
+- Docker allocates a read-write filesystem to the container, as its final layer. This allows a running container to create or modify files and directories in its local filesystem.
+- Docker creates a network interface to connect the container to the default network, since you didn't specify any networking options. This includes assigning an IP address to the container. By default, containers can connect to external networks using the host machine's network connection.
+- Docker starts the container and executes `/bin/bash`. Because the container is running interactively and attached to your terminal (due to the `-i` and `-t` flags), you can provide input using your keyboard while Docker logs the output to your terminal.
+- When you run `exit` to terminate the `/bin/bash` command, the container stops but isn't removed. You can start it again or remove it.
 
-```
-docker pull myrepo/myapp:1.0
-docker run -d -p 80:5000 myrepo/myapp:1.0
-```
+## Its Technology
 
+Docker is written in the Go programming language and takes advantage of several features of the Linux kernel to deliver its functionality.
+
+Docker uses a technology called namespaces to provide the isolated workspace called the container.
+
+When you run a container, Docker creates a set of namespaces for that container.
+
+These namespaces provide a layer of isolation. Each aspect of a container runs in a separate namespace and its access is limited to that namespace.
