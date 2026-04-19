@@ -407,4 +407,78 @@ jobs:
 ```
 
 
+## Contexts & Expressions
 
+### Literals Expressions
+
+As part of an expression, you can use `boolean`, `null`, `number`, or `string` data types.
+
+| Data type |                           **Literal value**                                                        |
+|---------- |----------------------------------------------------------------------------------------------------|
+| boolean   |                      true or false                                                                 |
+|  null     |                            null                                                                    |
+| number    |                Any number format supported by JSON.                                                |
+|string     | You don't need to enclose strings in ${{ and }}. However, if you do, you must use single quotes (') around the string. To use a literal single quote, escape the literal single quote using an additional single quote (''). Wrapping with double quotes (") will throw an error. |
+
+**Example of literals:**
+
+```yaml
+env:
+  myNull: ${{ null }}
+  myBoolean: ${{ false }}
+  myIntegerNumber: ${{ 711 }}
+  myFloatNumber: ${{ -9.2 }}
+  myHexNumber: ${{ 0xff }}
+  myExponentialNumber: ${{ -2.99e-2 }}
+  myString: Mona the Octocat
+  myStringInBraces: ${{ 'It''s open source!' }}
+```
+
+### Operators Expressions
+
+
+| Operator |                           Description                                                       |
+|---------- |----------------------------------------------------------------------------------------------------|
+| `( )`   |                     Logical grouping                                                            |
+|  `[ ]`     |                            Index                                                                    |
+| ` . `    |              	Property de-reference                                              |
+| `!`     |	                       Not |
+| ` < `   |   Less than
+
+### Github Context
+
+The `github` context contains information about the workflow run and the event that triggered the run. 
+
+```yaml
+name: Run CI
+on: [push, pull_request]
+
+jobs:
+  normal_ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run normal CI
+        run: echo "Running normal CI"
+
+  pull_request_ci:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Run PR CI
+        run: echo "Running PR only CI"
+```
+
+
+
+### secrets context
+
+The secrets context contains the names and values of secrets that are available to a workflow run. 
+
+The secrets context is not available for composite actions due to security reasons. 
+
+If you want to pass a secret to a composite action, you need to do it explicitly as an input. 
+
+`GITHUB_TOKEN` is a secret that is automatically created for every workflow run, and is always included in the `secrets` context
+
+
+ 
