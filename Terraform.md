@@ -534,11 +534,222 @@ As your infrastructure operations mature, storing your state remotely using HCP 
 
 
 
+## Variables and outputs
+
+Input variables let you parametrize the behavior of your Terraform configuration.
+
+You can also define output values to expose data about the resources you create.
+
+Variables and outputs also allow you to integrate your Terraform workspaces with other automation tools by providing a consistent interface to configure and retrieve data about your workspace's infrastructure.
+
+### Input Variables
+
+Create a new file in your learn-terraform-aws-get-started directory named `variables.tf` with the following configuration.
+
+```hcl
+variable "instance_name" {
+  description = "Value of the EC2 instance's Name tag."
+  type        = string
+  default     = "learn-terraform"
+}
+
+variable "instance_type" {
+  description = "The EC2 instance's type."
+  type        = string
+  default     = "t2.micro"
+}
+```
+
+These input variables allow you to update the EC2 instance's name and type without modifying your configuration files each time.
+
+Both variables set a default value for Terraform to use if you do not specify a value for them.
+
+Terraform recommend that you put your workspace's variable and output definitions in their own respective files, `variables.tf` and `outputs.tf`, to make it easier for users to maintain your Terraform configuration.
+
+Update the instance configuration in `main.tf` to refer to these variables instead of hard-coding the argument values.
+
+```hcl
+resource "aws_instance" "app_server" {
+   ami           = data.aws_ami.ubuntu.id
+ - instance_type = "t2.micro"
+ + instance_type = var.instance_type
+
+  tags = {
+  - Name = "learn-terraform"
+  + Name = var.instance_name
+  }
+}
+```
+You can set values for your Terraform variables in a number of ways, including environment variables, command line arguments, and in files stored on disk.
+
+Run a Terraform plan without applying it to see what would happen if you changed your EC2 instance type from `t2.micro` to `t2.large` using a command line variable.
+
+```bash
+$ terraform plan -var instance_type=t2.large
+
+data.aws_ami.ubuntu: Reading...
+data.aws_ami.ubuntu: Read complete after 1s [id=ami-0026a04369a3093cc]
+aws_instance.app_server: Refreshing state... [id=i-0c636e158c30e48f9]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # aws_instance.app_server will be updated in-place
+  ~ resource "aws_instance" "app_server" {
+        id                                   = "i-0c636e158c30e48f9"
+      ~ instance_type                        = "t2.micro" -> "t2.large"
+      ~ public_dns                           = "ec2-34-216-162-36.us-west-2.compute.amazonaws.com" -> (known after apply)
+      ~ public_ip                            = "34.216.162.36" -> (known after apply)
+        tags                                 = {
+            "Name" = "learn-terraform"
+        }
+        # (36 unchanged attributes hidden)
+
+        # (8 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply"
+now.
+```
+
+If you were to apply this plan, Terraform would update your EC2 instance with the new instance type.
+
+Terraform needs to replace the instance to implement this change, so the AWS provider also indicates that the IP address and hostname will change as well, but marks them as (`known after apply`) because AWS will not assign the new values until you apply the change to recreate the instance.
+
+## Output values
+
+Output values allow you to access attributes from your Terraform configuration and consume their values with other automation tools or workflows.
+
+Create a new file named `outputs.tf` with the following configuration.
+
+```hcl
+output "instance_hostname" {
+  description = "Private DNS name of the EC2 instance."
+  value       = aws_instance.app_server.private_dns
+}
+```
+
+This output value exposes your EC2 instance's hostname from your Terraform workspace.
+
+Apply your configuration. Since the default values of the two variables you created are the same as the hard-coded values they replaced, Terraform will detect that the only change is the output value you added. Respond to the confirmation prompt with a `yes` to add the output value to your workspace.
+
+```bash
+$ terraform apply
+data.aws_ami.ubuntu: Reading...
+data.aws_ami.ubuntu: Read complete after 1s [id=ami-0026a04369a3093cc]
+aws_instance.app_server: Refreshing state... [id=i-0c636e158c30e48f9]
+
+Changes to Outputs:
+  + instance_hostname = "ip-172-31-35-26.us-west-2.compute.internal"
+
+You can apply this plan to save these new output values to the Terraform state, without changing any real infrastructure.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
 
 
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
+Outputs:
 
+instance_hostname = "ip-172-31-35-26.us-west-2.compute.internal"
+```
 
+Terraform prints out your output values when you run a plan or apply, and also stores them in your workspace's state file.
 
+Review your output values using the `terraform output` command.
 
+```bash
+$ terraform output
+instance_hostname = "ip-172-31-35-26.us-west-2.compute.internal"
+```
+
+## Modules
+
+Modules are reusable sets of configuration
+
+Use modules to consistently manage complex infrastructure deployments that include multiple resources and data sources.
+
+Like providers, you can source modules from the Terraform Registry. You can also create your own modules and share them within your organization.
+
+### Module block
+
+Add a module block to your configuration in main.tf to create a VPC and related networking resources for your EC2 instance.
+
+```hcl
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.19.0"
+
+  name = "example-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24"]
+
+  enable_dns_hostnames    = true
+}
+```
+Since Terraform automatically resolves dependencies within your configuration, you can organize your configuration blocks in any order you like.
+
+As a best practice, terraform recommend that you organize your configuration so that it is easy for you and your team to maintain.
+
+This configuration defines a VPC named example-vpc with one public and two private subnets.
+
+Move your EC2 instance into your new VPC by updating the resource block to match the one below.
+
+```hcl
+resource "aws_instance" "app_server" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
+
+  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  subnet_id              = module.vpc.private_subnets[0]
+
+  tags = {
+    Name = var.instance_name
+  }
+}
+```
+
+This change will configure your EC2 instance to be in one of your new VPC's public subnets and use its default security group.
+
+Whenever you add a new module to your configuration, you will need to install it by re-initializing the workspace.
+
+Install the VPC module by running `terraform init`.
+
+```bash
+$ terraform init
+Initializing the backend...
+Initializing modules...
+Downloading registry.terraform.io/terraform-aws-modules/vpc/aws 5.19.0 for vpc...
+- vpc in .terraform/modules/vpc
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/aws v5.98.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+
+When you initialize an existing workspace, Terraform detects and installs any new providers and modules.
+
+Terraform tracks the current versions of the providers used with your configuration in the `.terraform.lock.hcl` file in your workspace's directory.
 
