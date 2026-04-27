@@ -195,6 +195,168 @@ $ python -m pydoc -w magical_characters
 wrote magical_characters.html
 ```
 
+## Exploring Docstring Formats in Python
+
+While the structure of your docstrings may depend on your preference, certain conventions have emerged that standardize the way they’re written.
+
+These docstring formats help with staying consistent and allow automated tools like Sphinx and pydoc to parse docstrings and generate navigable documentation websites.
+
+Following a structured format could turn your plain text comments into full-featured developer documentation.
+
+Some of the most widely used of these formats are the following:
+
+- reStructuredText docstrings
+- Google-style docstrings
+- NumPy-style docstrings
+- Doctest-style docstrings
+
+It’s important to learn the nuances of each of these formats so you can make the right choice for your Python projects.
+
+### reStructuredText Docstrings
+
+reStructuredText—often abbreviated as reST—is a lightweight markup language used for writing plain text.
+
+It’s the default formatting style for inline documentation in Python, as outlined in PEP 287, and is used with tools like Sphinx to generate documentation.
+
+When you write docstrings in reST, you need to include specific elements such as **parameter names**, **type names**, **return value descriptions**, and **return types**.
+
+You can also add **headers**, **lists**, and **links** to improve the structure.
+
+While reST is slightly more technical than other formats, it offers precision and can render documentation into beautiful HTML or PDFs.
+
+Here’s a magic-infused reST docstring example for a function:
+
+```python
+def cast_spell(wand, incantation, target=None):
+    """
+    Cast a magical spell using a wand and incantation.
+    This function simulates casting a spell. With no
+    target specified, it is cast into the void.
+
+    :param wand: The wand used to do the spell-casting deed.
+    :type wand: str
+    :param incantation: The words said to activate the magic.
+    :type incantation: str
+    :param target: The object or person the spell is directed at (optional).
+    :return: A string describing the result of the spell.
+    :rtype: str
+
+    :raises ValueError: If the incantation is unknown or the wand fails to work.
+    """
+    valid_incantations = ["Lumos", "Alohomora", "Expelliarmus"]
+    if not wand:
+        raise ValueError("You can't cast spells without a wand!")
+    if incantation not in valid_incantations:
+        raise ValueError("Incantation not recognized.")
+    if target:
+        return f"{incantation} hits {target} with magic speed!"
+    return f"{incantation} is cast into the void...sparkles shimmer faintly"
+```
+
+### Google-Style Docstrings
+
+Google-style docstrings provide a clean, structured way to document your code, especially when it’s concerned with multiple parameters or returns complex values.
+
+They became popular through Google’s Python projects and other large codebases.
+
+To illustrate, imagine casting a spell that allows users to retrieve magical items with ease.
+
+For such a program, a Google-style docstring might look like this:
+
+```python
+def get_magic_items(user_id, include_potions=False):
+    """
+    Retrieve a list of magical items for a specific user.
+
+    Args:
+        user_id (int): The ID of the user whose items should be retrieved.
+        include_potions (bool, optional): Whether to include potions.
+
+    Returns:
+        list[str]: A list of item names associated with the user.
+    """
+    items = ["wand", "cloak", "crystal ball"]
+    if include_potions:
+        items.extend(["healing potion", "invisibility potion"])
+    return items
+```
+
+In this format, `Args` lists parameters and their descriptions, `Returns` describes the return value and its type, and Raises (when included) shows exceptions that might be raised by the function.
+
+Google-style docstrings shine when you need a detailed, consistent structure—especially if you’re collaborating on large projects or using documentation generators like Sphinx.
+
+### NumPy-Style Docstrings
+
+The NumPy style of docstrings is favored in scientific and data-oriented Python projects.
+
+It uses sections with headers underlined by dashes to clearly distinguish different parts of the docstring.
+
+Here’s a NumPy-style docstring in action:
+
+```python
+def brew_potion(ingredients, heat_level):
+    """
+    Brew a potion using selected ingredients and heat.
+
+    Parameters
+    ----------
+    ingredients : list of str
+        A list of magical ingredients.
+    heat_level : int
+        The intensity of the heat used for brewing.
+
+    Returns
+    -------
+    str
+        A description of the brewed potion.
+    """
+    return f"A sparkling blue elixir of friendship heated at {heat_level}."
+```
+
+This style places emphasis on headers such as parameters, examples, and returns.
+
+It’s mostly used in academic and scientific circles with libraries like NumPy, pandas, and SciPy.
+
+You may find NumPy-style docstrings to be an attractive choice when writing programs for data analysis, scientific computing, or any project that requires detailed, well-formatted documentation.
+
+### Doctest-Style Docstrings
+
+The doctest-style docstring stands out among the common formats because it accomplishes two things at the same time:
+- it documents your code and acts as a lightweight automated test suite.
+-  When you include example code in the docstring, the `doctest` module verifies the examples you’ve written as part of your tests.
+
+The built-in `doctest` module ensures that the function behaves as expected.
+
+You essentially write examples in the same way they would be typed in the Python shell, and `doctest` confirms if the output matches.
+
+In the example below, a spell to undo other spells is documented so you can see the doctest format in action:
+
+```python
+def undo_spell(spell):
+    """
+    Reverses characters in a spell incantation, thereby undoing a spell.
+
+    Example:
+    >>> undo_spell("Expelliarmus")
+    'sumraillepxE'
+
+    >>> undo_spell("Lumos")
+    'somuL'
+    """
+    return spell[::-1]
+```
+
+After typing out the docstring as shown above, you could run it as a test by entering it in your terminal like this:
+
+```bash
+$ python -m doctest magic_spells.py
+```
+This assumes that your file is named `magic_spells.py`.
+
+If your function returns something that isn’t expected based on your docstring, then `doctest` would raise an error.
+
+
+
 ## Writing Effective Docstrings
 
 A good analogy for an effective docstring is a well-drawn road map that tells you where to go while on vacation in a foreign country.
@@ -252,4 +414,47 @@ def enchant_wand(wand_type, level=1):
 When you write multiline docstrings, you should always follow a one-line summary—in the imperative verb form—with a blank line. 
 
 Also, don’t shy away from examples and clearly describe any exceptions and arguments, as shown above.
+
+### Docstrings for Classes
+
+Class-level docstrings describe the overall purpose of a class, its attributes, and public methods.
+
+With class-level docstrings, you generally include a summary of the class’s purpose at the top of the class definition, as in the example below:
+
+```python
+class Potion:
+    """
+    Represents a magical potion composed of various ingredients.
+
+    Attributes
+    ----------
+    name : str
+        The name of the potion.
+    ingredients : list of str
+        A list of ingredients used in the potion.
+    potency : int
+        The strength level of the potion.
+
+    Methods
+    -------
+    brew():
+        Completes the potion and sets its potency.
+    describe():
+        Returns a human-readable summary of the potion.
+    """
+
+    def __init__(self, name, ingredients):
+        self.name = name
+        self.ingredients = ingredients
+        self.potency = 0
+
+    def brew(self):
+        """Simulate brewing the potion by calculating potency."""
+        self.potency = len(self.ingredients) * 10
+
+    def describe(self):
+        """Return a string describing the potion and its strength."""
+        return f"{self.name} (Potency: {self.potency})"
+```
+
 
