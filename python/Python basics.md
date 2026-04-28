@@ -224,3 +224,225 @@ student-name = "John"
 ```
 These examples will produce errors because the names violate Python's naming rules.
 
+## What is Data Types?
+
+In Python programming, a data type defines the kind of value stored in a variable.
+
+When a variable is created, Python automatically determines the type of data stored inside it.
+
+Data types are important because they determine how values are stored, processed and used inside a Python program
+
+For example, numbers can be used for mathematical calculations, text can be used for messages or user input, and boolean values can represent logical conditions.
+
+Python provides several built-in data types. In this beginner lesson we will focus on the most important atomic data types:
+
+- Integer (int)
+- Float (float)
+- String (str)
+- Boolean (bool)
+
+### Checking the Data Type of a Variable
+
+Python provides a built-in function called type() that allows you to check the data type of a variable.
+
+```python
+x = 10
+
+print(type(x))
+```
+This shows that the variable `x` contains an integer value.
+
+### Integer Data Type (int)
+
+The integer data type represents whole numbers. Integers can be positive numbers, negative numbers, or zero.
+
+Example: Integer Values
+
+```python
+age = 25
+year = 2024
+temperature = -5
+
+print(age)
+print(year)
+print(temperature)
+```
+
+Example: Integer Calculations
+
+```python
+a = 10
+b = 5
+
+sum = a + b
+
+print(sum)
+```
+
+### Float Data Type (float)
+
+A float represents numbers that contain a decimal point. 
+
+These numbers are used when more precise values are required.
+
+```python
+price = 19.99
+height = 5.8
+temperature = -2.5
+
+print(price)
+print(height)
+print(temperature)
+```
+
+Example: Float Calculation
+
+```python
+a = 5.5
+b = 2.5
+
+result = a + b
+
+print(result)
+```
+
+### String Data Type (str)
+
+A string represents text in Python. Strings are written inside quotation marks.
+
+Strings can use either single quotes or double quotes.
+
+Example: String Values
+
+```python
+name = "Alice"
+course = "Python Programming"
+city = "London"
+
+print(name)
+print(course)
+print(city)
+```
+
+Example: Combining Strings
+
+```python
+first_name = "Alice"
+last_name = "Smith"
+
+full_name = first_name + " " + last_name
+
+print(full_name)
+```
+
+```python
+first_name = "Alice"
+last_name = "Smith"
+
+print (f"{first_name} {last_name}")
+```
+
+This process is called string concatenation.
+
+### Boolean Data Type (bool)
+
+The boolean data type represents logical values. A boolean value can only be either **True** or **False**.
+
+Boolean values are commonly used in conditions, decision making and program control structures such as `if` statements.
+
+Example: Boolean Values
+
+```python
+is_student = True
+is_logged_in = False
+
+print(is_student)
+print(is_logged_in)
+```
+
+Example: Boolean from Comparison
+
+```python
+x = 10
+y = 5
+
+print(x > y)
+```
+
+
+## How to Input and Output in python?
+
+In programming, input and output allow a program to communicate with users. 
+
+Input allows the user to provide data to the program, while output allows the program to display results.
+
+Python provides simple built-in functions for performing input and output operations. The two most important functions are:
+
+- print() – used to display output
+- input() – used to receive input from the user
+
+### Python Output Using the print() Function
+
+The `print()` function is used to display information on the screen. It is one of the most commonly used functions in Python.
+
+Example: Printing Text
+
+```python
+print("Hello Python")
+```
+
+In this example, the program prints the message `Hello Python` on the screen.
+
+Example: Printing Multiple Values
+
+```python
+name = "Alice"
+age = 25
+
+print(name)
+print(age)
+```
+
+Example: Printing Multiple Items in One Statement
+
+```python
+name = "Alice"
+age = 25
+
+print("Name:", name)
+print("Age:", age)
+```
+
+### Python Input Using the input() Function
+
+The `input()` function allows a program to receive data from the user. When Python executes this function, the program pauses and waits for the user to type something.
+
+The value entered by the user is stored as a string.
+
+Example: Basic User Input
+
+```python
+name = input("Enter your name: ")
+
+print("Hello", name)
+```
+
+In this example:
+- The program asks the user to enter their name.
+- The value entered by the user is stored in the variable name.
+- The program then prints a greeting message.
+
+#### Receiving Numeric Input
+
+The `input()` function always returns text. 
+
+If a program needs numbers, the input must be converted using functions such as `int()` or `float()`.
+
+Example: Converting Input to Integer
+
+```python
+age = int(input("Enter your age: "))
+
+print("Your age is", age)
+```
+
