@@ -64,7 +64,7 @@ But unless you’re using x as the argument of a mathematical function, it’s n
 
 Imagine you’re storing a person’s name as a string, and you want to use string slicing to format their name differently.
 
-You could end up with something like this:
+You could end up with something like this:(❌ Not recommended)
 
 ```python
 >>> x = "John Smith"
@@ -77,7 +77,7 @@ This will work, but you’ll have to keep track of what x, y, and z represent.
 
 It may also be confusing for collaborators. 
 
-A much clearer choice of names would be something like this:
+A much clearer choice of names would be something like this: (✅ Recommended)
 
 ```python
 >>> name = "John Smith"
@@ -88,7 +88,7 @@ A much clearer choice of names would be something like this:
 
 Similarly, to reduce the amount of typing you do, it can be tempting to use abbreviations when choosing names. 
 
-In the example below, you defined a db() function that takes a single argument, x, and doubles it:
+In the example below, you defined a db() function that takes a single argument, x, and doubles it: ❌ Not recommended
 
 ```python
 def db(x):
@@ -101,7 +101,7 @@ At first glance, this could seem like a sensible choice.
 
  But imagine coming back to this code in a few days. You may have forgotten what you were trying to achieve with this function, and that would make guessing how you abbreviated it difficult.
 
- The following example is much clearer. If you come back to this code a couple of days after writing it, you’ll still be able to read and understand the purpose of this function:
+ The following example is much clearer. If you come back to this code a couple of days after writing it, you’ll still be able to read and understand the purpose of this function: ✅ Recommended
 
  ```python
 def multiply_by_two(x):
@@ -222,7 +222,7 @@ If you need to break a line around binary operators, like `+` and `*`, then you 
 
 This rule stems from mathematics. Mathematicians agree that breaking before binary operators improves readability.
 
-Below is an example of breaking before a binary operator:
+Below is an example of breaking before a binary operator: ✅ Recommended
 
 ```python
 total = (first_variable
