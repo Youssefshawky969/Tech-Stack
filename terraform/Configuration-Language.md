@@ -1,6 +1,8 @@
-# Define infrastructure with Terraform resources
+# Resources 
 
-## Review the `random_pet` resource
+## Define infrastructure with Terraform resources
+
+### Review the `random_pet` resource
 
 The first resource block defines a `random_pet` resource named `name` which generates a random pet name.
 
@@ -29,7 +31,7 @@ Resources have arguments, attributes, and meta-arguments.
 | configure a particular resource; because of this, many arguments are resource-specific. Arguments can be required or optional, as specified by the provider. If you do not supply a required argument, Terraform will give an error and not apply the configuration.| Attributes are values exposed by an existing resource. References to resource attributes take the format `resource_type.resource_name.attribute_name`. Unlike arguments which specify an infrastructure object's configuration, a resource's attributes are often assigned to it by the underlying cloud provider or API. | change a resource's behavior, such as using a `count` meta-argument to create multiple resources. Meta-arguments are a function of Terraform itself and are not resource or provider-specific.|
 
 
-## Review the EC2 instance resource
+### Review the EC2 instance resource
 
 The `aws_instance.web` resource block defines an `aws_instance` resource named `web` to create an AWS EC2 instance.
 
@@ -54,7 +56,7 @@ The arguments inside the `aws_instance.web` resource block specify what type of 
 - The `tags` argument specifies this EC2 `instance's name`. Notice that the argument references the random_pet.name's ID attribute (`random_pet.name.id`) to give the EC2 instance a unique name.
 - This defines an implicit dependency between the EC2 instance and the random_pet resource; Terraform cannot create the instance until it has a name for it.
 
-## Associate security group with instance
+### Associate security group with instance
 
 To enable access to the EC2 instance's web server, you must define a security group that allows ingress traffic on port `80` and all egress traffic, and associate the security group with your instance.
 
