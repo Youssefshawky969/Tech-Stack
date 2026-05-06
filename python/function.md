@@ -60,11 +60,11 @@ You’ll get a syntax error if you forget the parentheses in a function definiti
 
 If you forget the parentheses in a function call, then you’ll get a function object instead of the expected result that the function should produce.
 
-# Calling function
+## Calling function
 
 two main ways to call Python functions
 
-## Positional Arguments
+### Positional Arguments
 
 The quickest way to call a function with arguments is to rely on the specific position of each argument. In this case, you’ll be using what’s known as positional arguments.
 
@@ -117,7 +117,7 @@ TypeError: calculate_cost() takes 3 positional arguments but 4 were given
 ```
 
 
-## Keyword Arguments
+### Keyword Arguments
 
 When calling a function, you can specify arguments in the form argument=value. This way of passing arguments to a Python function is known as using keyword arguments.
 
@@ -189,6 +189,8 @@ SyntaxError: positional argument follows keyword argument
 Once you’ve specified a keyword argument, you can’t place any positional arguments after it. In this example, you use keyword arguments for item and quantity, but positional arguments for price. This raises a SyntaxError exception because Python’s grammar prohibits positional arguments following keyword arguments to avoid ambiguity.
 
 # Returning From Functions
+
+## Returning Values
 
 Python functions can return concrete values, as you briefly saw at the end of the previous section. To do this, you can use the return statement, which serves two purposes:
 
