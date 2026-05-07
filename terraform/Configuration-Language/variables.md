@@ -286,3 +286,43 @@ module "vpc" {
 
 This way, users of this configuration can specify the number of public and private subnets they want without worrying about defining CIDR blocks.
 
+
+### Map variable type
+
+Each of the resources and modules declared in `main.tf` includes two tags: `project_name` and `environment`. Assign these tags with a map variable type.
+
+Declare a new `map` variable for resource tags in `variables.tf`.
+
+```hcl
+variable "resource_tags" {
+  description = "Tags to set for all resources"
+  type        = map(string)
+  default     = {
+    project     = "project-alpha",
+    environment = "dev"
+  }
+}
+```
+
+Setting the type to `map(string)` tells Terraform to expect strings for the values in the map.
+
+Map keys are always strings. Like dictionaries or maps from programming languages, you can retrieve values from a map with the corresponding key.
+
+See how this works with the Terraform console.
+
+```bash
+$ terraform console
+>
+
+> var.resource_tags["environment"]
+"dev"
+```
+
+> [!NOTE]
+> The lists and maps you used are collection types. Terraform also supports two structural types. Structural types have a fixed number of values that can be of different types.
+>
+> Tuple: A fixed-length sequence of values of specified types.
+> 
+> Object: A lookup table, matching a fixed set of keys to values of specified types.
+
+
